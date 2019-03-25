@@ -29,7 +29,8 @@
             <EditText
                 android:id="@+id/edit_text"
                 android:layout_width="256dp"
-                android:layout_height="52dp" />
+                android:layout_height="52dp"
+                android:saveEnabled="false" />
 
             <ImageButton
                 android:id="@+id/back"
@@ -157,6 +158,17 @@
                 android:src="@drawable/hangup"
                 app:layout_column="2"
                 app:layout_row="4" />
+
+            <!-- Update for lab4 -->
+            <ImageButton
+                android:id="@+id/contacts_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/contacts"
+                app:layout_column="1"
+                app:layout_row="4"
+                app:layout_gravity="center"
+                />
 
         </android.support.v7.widget.GridLayout>
 

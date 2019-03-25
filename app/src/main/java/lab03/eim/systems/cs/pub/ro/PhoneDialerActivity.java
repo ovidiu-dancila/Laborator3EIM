@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class PhoneDialerActivity extends AppCompatActivity {
 
@@ -21,10 +22,19 @@ public class PhoneDialerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_dialer);
 
+
+
         // Uncommend this to lock the orientation to Portrait
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         final EditText editText = findViewById(R.id.edit_text);
+
+        // Update to save state of the edit textbox
+        if (savedInstanceState != null) {
+            if(savedInstanceState.getString(Constants.PHONE_NUMBER_EDIT_TEXTBOX) != null) {
+                editText.setText(savedInstanceState.getString(Constants.PHONE_NUMBER_EDIT_TEXTBOX));
+            }
+        }
 
         int buttons[] = {R.id.button_0,
                 R.id.button_1,
@@ -81,6 +91,22 @@ public class PhoneDialerActivity extends AppCompatActivity {
             }
         });
 
+        // Update for lab4:
+        ImageButton contactsBtn = findViewById(R.id.contacts_btn);
+        contactsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phoneNumber = editText.getText().toString();
+                if  (phoneNumber.length() > 0) {
+                    Intent intent = new Intent("lab04.eim.systems.cs.pub.ro.intent.action.ContactsManagerActivity");
+                    intent.putExtra("lab04.eim.systems.cs.pub.ro.intent.action.ContactsManagerActivity.PHONE_NUMBER_KEY", phoneNumber);
+                    startActivityForResult(intent, Constants.CONTACTS_MANAGER_REQUEST_CODE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "No phone number", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
 
     }
 
@@ -98,4 +124,24 @@ public class PhoneDialerActivity extends AppCompatActivity {
             editText.append((button.getText()));
         }
     }
+
+    // Updates for forced save state
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        EditText phoneNrEditText = findViewById(R.id.edit_text);
+        if(savedInstanceState.getString(Constants.PHONE_NUMBER_EDIT_TEXTBOX) != null) {
+            phoneNrEditText.setText(savedInstanceState.getString(Constants.PHONE_NUMBER_EDIT_TEXTBOX));
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        EditText phoneNrEditText = findViewById(R.id.edit_text);
+        outState.putString(Constants.PHONE_NUMBER_EDIT_TEXTBOX, phoneNrEditText.getText().toString());
+    }
+
 }

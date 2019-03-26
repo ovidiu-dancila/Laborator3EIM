@@ -144,4 +144,12 @@ public class PhoneDialerActivity extends AppCompatActivity {
         outState.putString(Constants.PHONE_NUMBER_EDIT_TEXTBOX, phoneNrEditText.getText().toString());
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        switch (requestCode) {
+            case Constants.CONTACTS_MANAGER_REQUEST_CODE:
+                Toast.makeText(this, "[PHONE_DIALER} Activiy return with result" + resultCode, Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
+
 }
